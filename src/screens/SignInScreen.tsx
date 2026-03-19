@@ -6,6 +6,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { BrandLogo } from "@/components/BrandLogo";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { ScreenContainer } from "@/components/ScreenContainer";
+import { type } from "@/constants/typography";
 import { useAppSession } from "@/store/AppProvider";
 import type { RootStackParamList } from "@/types";
 
@@ -27,15 +28,16 @@ export const SignInScreen = () => {
     <ScreenContainer>
       <Animated.View entering={FadeInDown.duration(420)}>
         <BrandLogo muted />
-        <Text className="mt-8 text-[12px] uppercase tracking-[2px] text-black/36">Sign in</Text>
-        <Text className="mt-4 text-[34px] font-semibold tracking-[-0.9px] text-[#111111]">Welcome back</Text>
+        <Text style={type.eyebrow} className="mt-8 text-black/36">Sign in</Text>
+        <Text style={type.screenTitle} className="mt-4 text-[#111111]">Welcome back</Text>
       </Animated.View>
 
       <Animated.View entering={FadeInDown.delay(120).duration(420)} className="mt-8 gap-6">
         <View className="border-b border-black/[0.08] pb-3">
-          <Text className="mb-3 text-[11px] uppercase tracking-[1.8px] text-black/34">Phone number</Text>
+          <Text style={type.eyebrowTight} className="mb-3 text-black/34">Phone number</Text>
           <TextInput
-            className="text-[18px] text-[#111111]"
+            style={type.bodyStrong}
+            className="text-[#111111]"
             keyboardType="phone-pad"
             placeholder="Enter phone number"
             placeholderTextColor="rgba(17,17,17,0.32)"
@@ -44,9 +46,10 @@ export const SignInScreen = () => {
           />
         </View>
         <View className="border-b border-black/[0.08] pb-3">
-          <Text className="mb-3 text-[11px] uppercase tracking-[1.8px] text-black/34">Passcode</Text>
+          <Text style={type.eyebrowTight} className="mb-3 text-black/34">Passcode</Text>
           <TextInput
-            className="text-[18px] text-[#111111]"
+            style={type.bodyStrong}
+            className="text-[#111111]"
             placeholder="Enter passcode"
             placeholderTextColor="rgba(17,17,17,0.32)"
             secureTextEntry

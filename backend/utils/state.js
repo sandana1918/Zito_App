@@ -31,26 +31,50 @@ const getPublicState = () => {
   };
 };
 
+const premiumForBand = (band) => {
+  if (band === "Elevated") {
+    return 89;
+  }
+
+  if (band === "Medium") {
+    return 69;
+  }
+
+  return 49;
+};
+
+const dailyInstallmentForPremium = (premium) => Math.ceil(premium / 7);
+
 const registerWorker = (payload) => {
   const state = readState();
+  const averageDailyEarnings = Number(payload.averageDailyEarnings) || state.worker.fourWeekAverageDailyEarnings;
+  const weeklyBaselineEarnings = averageDailyEarnings * 7;
+  const weeklyPremium = premiumForBand(state.coverage.riskBand);
 
   state.worker = {
     ...state.worker,
     name: payload.name || state.worker.name,
     phone: payload.phone || state.worker.phone,
+    workerId: payload.workerId || state.worker.workerId,
     platform: payload.platform || state.worker.platform,
     registeredZone: payload.registeredZone || state.worker.registeredZone,
-    weeklyBaselineEarnings:
-      Number(payload.weeklyBaselineEarnings) || state.worker.weeklyBaselineEarnings,
+    fourWeekAverageDailyEarnings: averageDailyEarnings,
+    weeklyBaselineEarnings,
     upiId: payload.upiId || state.worker.upiId,
     protectionStatus: "Active",
-    upiLinked: true
+    upiLinked: true,
+    aadhaarLinkedPhoneVerified: true,
+    policyActivatedAt: new Date().toISOString()
   };
 
   state.coverage = {
     ...state.coverage,
     status: "Active",
-    insight: "Zito is monitoring verified disruptions in your zone automatically."
+    weeklyPremium,
+    dailyInstallmentAmount: dailyInstallmentForPremium(weeklyPremium),
+    nextPremiumAmount: dailyInstallmentForPremium(weeklyPremium),
+    premiumTier: state.coverage.riskBand,
+    insight: "Policy active. This week's premium is locked and collected automatically in daily micro-installments."
   };
 
   writeState(state);
@@ -63,9 +87,14 @@ const buildScenarioUpdate = (scenario, currentState) => {
       coverage: {
         ...currentState.coverage,
         protectedThisWeek: 1540,
+        remainingProtectedEarnings: 1540,
         evScore: 71,
         riskBand: "Elevated",
-        insight: "Air quality risk is critical in Koramangala. Protection remains active."
+        premiumTier: "Elevated",
+        weeklyPremium: 89,
+        dailyInstallmentAmount: 13,
+        nextPremiumAmount: 13,
+        insight: "AQI risk is critical in Koramangala. Protection remains active and the payout rule has been executed."
       },
       conditions: {
         ...currentState.conditions,
@@ -78,6 +107,8 @@ const buildScenarioUpdate = (scenario, currentState) => {
         score: 71,
         band: "Elevated",
         trend: [54, 55, 57, 61, 64, 68, 71],
+        explanation:
+          "Your EV Score is recomputed every Sunday from forecasts, AQI, platform uptime history, and earnings variance to lock the coming week's premium.",
         factors: currentState.risk.factors.map((factor) =>
           factor.key === "aqi"
             ? {
@@ -97,9 +128,14 @@ const buildScenarioUpdate = (scenario, currentState) => {
       coverage: {
         ...currentState.coverage,
         protectedThisWeek: 1760,
+        remainingProtectedEarnings: 1760,
         evScore: 68,
         riskBand: "Medium",
-        insight: "Platform availability dipped during active hours. Protection remains active."
+        premiumTier: "Medium",
+        weeklyPremium: 69,
+        dailyInstallmentAmount: 10,
+        nextPremiumAmount: 10,
+        insight: "Platform availability dropped during active hours. Protection remained active and the payout was released automatically."
       },
       conditions: {
         ...currentState.conditions,
@@ -112,6 +148,8 @@ const buildScenarioUpdate = (scenario, currentState) => {
         score: 68,
         band: "Medium",
         trend: [54, 55, 57, 61, 60, 65, 68],
+        explanation:
+          "Your EV Score is recomputed every Sunday from forecasts, AQI, platform uptime history, and earnings variance to lock the coming week's premium.",
         factors: currentState.risk.factors.map((factor) =>
           factor.key === "platform"
             ? {
@@ -130,9 +168,14 @@ const buildScenarioUpdate = (scenario, currentState) => {
     coverage: {
       ...currentState.coverage,
       protectedThisWeek: 1940,
+      remainingProtectedEarnings: 1940,
       evScore: 74,
       riskBand: "Elevated",
-      insight: "Heat conditions are severe in your zone today. Protection remains active."
+      premiumTier: "Elevated",
+      weeklyPremium: 89,
+      dailyInstallmentAmount: 13,
+      nextPremiumAmount: 13,
+      insight: "Heat conditions are severe in your zone. Protection remains active and the payout rule has been executed."
     },
     conditions: {
       ...currentState.conditions,
@@ -145,6 +188,8 @@ const buildScenarioUpdate = (scenario, currentState) => {
       score: 74,
       band: "Elevated",
       trend: [54, 55, 57, 61, 64, 70, 74],
+      explanation:
+        "Your EV Score is recomputed every Sunday from forecasts, AQI, platform uptime history, and earnings variance to lock the coming week's premium.",
       factors: currentState.risk.factors.map((factor) =>
         factor.key === "weather"
           ? {
@@ -190,10 +235,10 @@ const triggerScenario = (scenario) => {
         : "2026-03-19T14:02:00.000Z";
   const creditedAt =
     scenario === "aqi"
-      ? "2026-03-19T09:36:00.000Z"
+      ? "2026-03-19T09:36:13.000Z"
       : scenario === "platform"
-        ? "2026-03-19T12:21:00.000Z"
-        : "2026-03-19T14:05:00.000Z";
+        ? "2026-03-19T12:21:21.000Z"
+        : "2026-03-19T14:05:26.000Z";
 
   const incident = {
     ...template,
@@ -238,4 +283,3 @@ module.exports = {
   triggerScenario,
   resetState
 };
-

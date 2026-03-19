@@ -7,6 +7,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { gradients } from "@/constants/theme";
+import { type } from "@/constants/typography";
 import type { RootStackParamList } from "@/types";
 
 export const IntroScreen = () => {
@@ -22,8 +23,8 @@ export const IntroScreen = () => {
           </Animated.View>
 
           <Animated.View entering={FadeInDown.delay(120).duration(650)} className="mt-16">
-            <Text className="text-[42px] font-semibold leading-[48px] tracking-[-1.1px] text-[#111111]">Automatic protection for gig workers.</Text>
-            <Text className="mt-5 max-w-[290px] text-[16px] leading-7 text-black/56">Verified disruptions trigger payout automatically.</Text>
+            <Text style={[type.screenTitle, { fontSize: 42, lineHeight: 48 }]} className="text-[#111111]">Automatic protection for gig workers.</Text>
+            <Text style={type.body} className="mt-5 max-w-[290px] text-black/56">Verified disruptions trigger payout automatically.</Text>
           </Animated.View>
         </View>
 

@@ -6,6 +6,7 @@ import { ScoreRing } from "@/components/ScoreRing";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { SectionHeader } from "@/components/SectionHeader";
 import { StatusChip } from "@/components/StatusChip";
+import { type } from "@/constants/typography";
 import { useZitoData } from "@/hooks/useZitoData";
 import { getScenarioAccent } from "@/utils/format";
 
@@ -36,15 +37,15 @@ export const RiskScreen = () => {
   return (
     <ScreenContainer>
       <Animated.View entering={FadeInDown.duration(450)}>
-        <Text className="text-[12px] uppercase tracking-[2px] text-black/40">Risk intelligence</Text>
-        <Text className="mt-3 text-[34px] font-semibold tracking-[-0.7px] text-[#111111]">Risk posture</Text>
-        <Text className="mt-3 text-[15px] leading-7 text-black/58">A live view of the conditions shaping your protected earning window.</Text>
+        <Text style={type.eyebrow} className="text-black/40">Risk intelligence</Text>
+        <Text style={type.screenTitle} className="mt-3 text-[#111111]">Risk posture</Text>
+        <Text style={type.body} className="mt-3 text-black/58">A live view of the conditions shaping your protected earning window.</Text>
       </Animated.View>
 
       <Animated.View entering={FadeInDown.delay(120).duration(450)} className="mt-6 items-center">
         <GlassPanel className="w-full items-center px-5 py-6">
           <ScoreRing band={risk.band} score={risk.score} />
-          <Text className="mt-6 max-w-[280px] text-center text-[14px] leading-6 text-black/60">{risk.explanation}</Text>
+          <Text style={type.bodySmall} className="mt-6 max-w-[280px] text-center text-black/60">{risk.explanation}</Text>
         </GlassPanel>
       </Animated.View>
 
@@ -56,13 +57,13 @@ export const RiskScreen = () => {
               <View className="absolute right-[-14] top-[-18] h-20 w-20 rounded-full" style={{ backgroundColor: `${getScenarioAccent(factor.key === "aqi" ? "aqi" : factor.key === "platform" ? "platform" : "heat")}14` }} />
               <View className={`gap-3 ${compact ? "" : "flex-row items-center justify-between"}`}>
                 <View className="flex-1">
-                  <Text className="text-[11px] uppercase tracking-[1.8px] text-black/42">{factor.label}</Text>
-                  <Text className="mt-2 text-[18px] font-semibold leading-6 text-[#111111]">{factor.level} pressure</Text>
-                  <Text className="mt-2 text-[13px] leading-5 text-black/56">{factor.insight}</Text>
+                  <Text style={type.eyebrowTight} className="text-black/42">{factor.label}</Text>
+                  <Text style={type.bodyStrong} className="mt-2 text-[#111111]">{factor.level} pressure</Text>
+                  <Text style={type.bodySmall} className="mt-2 text-black/56">{factor.insight}</Text>
                 </View>
                 <View className={`gap-2 ${compact ? "" : "items-end"}`}>
                   <StatusChip label={factor.level} />
-                  <Text className="text-[26px] font-semibold tracking-[-0.5px] text-[#111111]">{factor.value}</Text>
+                  <Text style={type.metricValueCompact} className="text-[#111111]">{factor.value}</Text>
                 </View>
               </View>
             </GlassPanel>
@@ -106,8 +107,8 @@ export const RiskScreen = () => {
           <View className="mt-3 flex-row justify-between px-1">
             {risk.trend.map((value, index) => (
               <View key={`${value}-${index}`} className="items-center">
-                <Text className="text-[11px] uppercase text-black/34">{dayLabels[index] || "D"}</Text>
-                <Text className="mt-1 text-[11px] text-black/56">{value}</Text>
+                <Text style={type.eyebrowTight} className="text-black/34">{dayLabels[index] || "D"}</Text>
+                <Text style={type.label} className="mt-1 text-black/56">{value}</Text>
               </View>
             ))}
           </View>

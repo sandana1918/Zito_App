@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import { Text, View, useWindowDimensions } from "react-native";
 import Svg, { Circle, Defs, G, Stop, LinearGradient as SvgGradient } from "react-native-svg";
+import { type } from "@/constants/typography";
 
 const STROKE = 11;
 
@@ -44,9 +45,9 @@ export const ScoreRing = ({ score, band }: { score: number; band: string }) => {
         </G>
       </Svg>
       <View className="absolute items-center px-6">
-        <Text className="text-[11px] uppercase tracking-[2px] text-black/42">EV score</Text>
-        <Text className={`mt-2 font-semibold tracking-[-1px] text-[#111111] ${size < 205 ? "text-[40px]" : "text-[48px]"}`}>{score}</Text>
-        <Text className="mt-1 text-[14px] text-black/58">{band} risk posture</Text>
+        <Text style={type.eyebrow} className="text-black/42">EV score</Text>
+        <Text style={[type.scoreValue, size < 205 ? { fontSize: 40, lineHeight: 44 } : null]} className="mt-2 text-[#111111]">{score}</Text>
+        <Text style={type.bodySmall} className="mt-1 text-black/58">{band} risk posture</Text>
       </View>
     </View>
   );

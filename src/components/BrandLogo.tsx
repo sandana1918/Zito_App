@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import Svg, { Path, Rect } from "react-native-svg";
+import { type } from "@/constants/typography";
 
 interface BrandLogoProps {
   size?: number;
@@ -22,7 +23,7 @@ export const BrandLogo = ({ size = 44, withWordmark = true, muted = false }: Bra
           fill={markColor}
         />
       </Svg>
-      {withWordmark ? <Text style={{ color: wordColor }} className="text-[18px] font-semibold tracking-[3px]">ZITO</Text> : null}
+      {withWordmark ? <Text style={[type.logo, { color: wordColor }]} className="text-[18px]">ZITO</Text> : null}
     </View>
   );
 };

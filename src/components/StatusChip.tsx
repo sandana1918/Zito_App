@@ -1,5 +1,6 @@
 import { Text, View } from "react-native";
 import { statusColors } from "@/constants/theme";
+import { type } from "@/constants/typography";
 
 export const StatusChip = ({ label }: { label: string }) => (
   <View
@@ -9,7 +10,7 @@ export const StatusChip = ({ label }: { label: string }) => (
       backgroundColor: `${statusColors[label] || "#111111"}12`
     }}
   >
-    <Text className="text-[11px] font-semibold text-[#111111]" numberOfLines={1}>
+    <Text style={type.chip} className="text-[#111111]" numberOfLines={1}>
       {label}
     </Text>
   </View>

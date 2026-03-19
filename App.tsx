@@ -3,6 +3,9 @@ import "./global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { StatusBar } from "expo-status-bar";
 import { useMemo } from "react";
+import { useFonts } from "expo-font";
+import { Inter_400Regular, Inter_500Medium, Inter_600SemiBold, Inter_700Bold } from "@expo-google-fonts/inter";
+import { Sora_500Medium, Sora_600SemiBold, Sora_700Bold } from "@expo-google-fonts/sora";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useNavigationContainerRef } from "@react-navigation/native";
@@ -34,6 +37,16 @@ const AppShell = () => {
 };
 
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_500Medium,
+    Inter_600SemiBold,
+    Inter_700Bold,
+    Sora_500Medium,
+    Sora_600SemiBold,
+    Sora_700Bold
+  });
+
   const providers = useMemo(
     () => (
       <QueryClientProvider client={queryClient}>
@@ -45,10 +58,13 @@ export default function App() {
     []
   );
 
+  if (!fontsLoaded) {
+    return null;
+  }
+
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaProvider>{providers}</SafeAreaProvider>
     </GestureHandlerRootView>
   );
 }
-

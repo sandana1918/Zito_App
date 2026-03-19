@@ -8,8 +8,9 @@ import { ScreenContainer } from "@/components/ScreenContainer";
 import { SectionHeader } from "@/components/SectionHeader";
 import { StatusChip } from "@/components/StatusChip";
 import { coveredCategories } from "@/constants/content";
+import { type } from "@/constants/typography";
 import { useZitoData } from "@/hooks/useZitoData";
-import { formatCompactCurrency } from "@/utils/format";
+import { formatCompactCurrency, formatDateTime } from "@/utils/format";
 import type { EventScenario } from "@/types";
 
 export const ProtectionDetailsScreen = () => {
@@ -26,20 +27,18 @@ export const ProtectionDetailsScreen = () => {
   return (
     <ScreenContainer>
       <Animated.View entering={FadeInDown.duration(450)}>
-        <Text className="text-[12px] uppercase tracking-[2px] text-white/[0.40]">Protection plan</Text>
-        <Text className="mt-3 text-[34px] font-semibold tracking-[-0.7px] text-white">Protection details</Text>
-        <Text className="mt-3 text-[15px] leading-7 text-white/[0.58]">
-          Clear coverage designed for working hours that depend on live city and platform conditions.
-        </Text>
+        <Text style={type.eyebrow} className="text-black/40">Protection plan</Text>
+        <Text style={type.screenTitle} className="mt-3 text-[#111111]">Protection details</Text>
+        <Text style={type.body} className="mt-3 text-black/58">One weekly premium, daily micro-installments, and automatic payout decisions when verified disruption thresholds are breached.</Text>
       </Animated.View>
 
       <GlassPanel className="mt-6 overflow-hidden px-5 py-5">
-        <View className="absolute right-[-18] top-[-18] h-28 w-28 rounded-full bg-[#58A6FF]/[0.10]" />
+        <View className="absolute right-[-18] top-[-18] h-28 w-28 rounded-full bg-black/[0.03]" />
         <View className="flex-row items-start justify-between gap-3">
           <View className="flex-1 pr-3">
-            <Text className="text-[12px] uppercase tracking-[1.8px] text-white/[0.40]">Coverage active</Text>
-            <Text className="mt-3 text-[24px] font-semibold tracking-[-0.5px] text-white">Weekly protection window is live</Text>
-            <Text className="mt-3 text-[14px] leading-6 text-white/[0.60]">Verified disruptions are evaluated automatically, and credited support lands in the linked payout destination when eligibility is met.</Text>
+            <Text style={type.eyebrow} className="text-black/40">Coverage active</Text>
+            <Text style={type.sectionTitle} className="mt-3 text-[#111111]">This week's premium is locked</Text>
+            <Text style={type.bodySmall} className="mt-3 text-black/60">EV Score is recomputed every Sunday at midnight from weather forecasts, AQI, platform uptime history, and your earnings variance.</Text>
           </View>
           <StatusChip label={coverage.status} />
         </View>
@@ -47,22 +46,20 @@ export const ProtectionDetailsScreen = () => {
 
       <View className="mt-6 gap-3">
         <GlassPanel className="px-5 py-5">
-          <SectionHeader title="What protection does" />
-          <Text className="text-[15px] leading-7 text-white/[0.65]">
-            Zito verifies covered disruptions in your registered zone and credits support automatically when the eligibility window is met.
-          </Text>
+          <SectionHeader title="How it works" />
+          <Text style={type.body} className="text-black/65">Zito verifies covered disruptions in your registered zone, checks your recent work-state eligibility, and credits support automatically to your linked UPI account.</Text>
         </GlassPanel>
 
         <GlassPanel className="px-5 py-5">
           <SectionHeader title="Covered categories" />
           <View className="gap-4">
             {coveredCategories.map((category) => (
-              <View key={category.title} className="flex-row items-start gap-4 rounded-[24px] border border-white/[0.06] bg-white/[0.03] px-4 py-4">
+              <View key={category.title} className="flex-row items-start gap-4 rounded-[24px] border border-black/[0.06] bg-black/[0.02] px-4 py-4">
                 <IncidentGlyph scenario={category.key as EventScenario} size={44} />
                 <View className="flex-1">
-                  <Text className="text-[17px] font-semibold text-white">{category.title}</Text>
-                  <Text className="mt-2 text-[13px] leading-5 text-white/[0.60]">{category.body}</Text>
-                  <Text className="mt-3 text-[12px] uppercase tracking-[1.4px] text-white/[0.42]">{category.note}</Text>
+                  <Text style={type.bodyStrong} className="text-[#111111]">{category.title}</Text>
+                  <Text style={type.bodySmall} className="mt-2 text-black/60">{category.body}</Text>
+                  <Text style={type.eyebrowTight} className="mt-3 text-black/42">{category.note}</Text>
                 </View>
               </View>
             ))}
@@ -70,19 +67,45 @@ export const ProtectionDetailsScreen = () => {
         </GlassPanel>
 
         <GlassPanel className="px-5 py-5">
-          <SectionHeader title="Plan setup" />
+          <SectionHeader title="Weekly premium" />
           <View className="gap-4">
-            <View className="flex-row items-start justify-between gap-3 border-b border-white/[0.06] pb-4">
-              <Text className="text-[12px] uppercase tracking-[1.6px] text-white/[0.38]">Registered zone</Text>
-              <Text className="max-w-[60%] text-right text-[15px] leading-6 text-white/[0.80]">{worker.registeredZone}</Text>
+            <View className="flex-row items-start justify-between gap-3 border-b border-black/[0.06] pb-4">
+              <Text style={type.eyebrow} className="text-black/38">Current premium</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{formatCompactCurrency(coverage.weeklyPremium)}</Text>
             </View>
-            <View className="flex-row items-start justify-between gap-3 border-b border-white/[0.06] pb-4">
-              <Text className="text-[12px] uppercase tracking-[1.6px] text-white/[0.38]">Weekly protection amount</Text>
-              <Text className="max-w-[60%] text-right text-[15px] leading-6 text-white/[0.80]">{formatCompactCurrency(coverage.weeklyProtectionAmount)}</Text>
+            <View className="flex-row items-start justify-between gap-3 border-b border-black/[0.06] pb-4">
+              <Text style={type.eyebrow} className="text-black/38">Daily collection</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{formatCompactCurrency(coverage.dailyInstallmentAmount)} from earnings</Text>
+            </View>
+            <View className="flex-row items-start justify-between gap-3 border-b border-black/[0.06] pb-4">
+              <Text style={type.eyebrow} className="text-black/38">Locked at</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{formatDateTime(coverage.premiumLockedAt)}</Text>
             </View>
             <View className="flex-row items-start justify-between gap-3">
-              <Text className="text-[12px] uppercase tracking-[1.6px] text-white/[0.38]">Payout destination</Text>
-              <Text className="max-w-[60%] text-right text-[15px] leading-6 text-white/[0.80]">{worker.upiId}</Text>
+              <Text style={type.eyebrow} className="text-black/38">Current band</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{coverage.premiumTier}</Text>
+            </View>
+          </View>
+        </GlassPanel>
+
+        <GlassPanel className="px-5 py-5">
+          <SectionHeader title="Plan setup" />
+          <View className="gap-4">
+            <View className="flex-row items-start justify-between gap-3 border-b border-black/[0.06] pb-4">
+              <Text style={type.eyebrow} className="text-black/38">Worker ID</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{worker.workerId}</Text>
+            </View>
+            <View className="flex-row items-start justify-between gap-3 border-b border-black/[0.06] pb-4">
+              <Text style={type.eyebrow} className="text-black/38">Registered zone</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{worker.registeredZone}</Text>
+            </View>
+            <View className="flex-row items-start justify-between gap-3 border-b border-black/[0.06] pb-4">
+              <Text style={type.eyebrow} className="text-black/38">Identity</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{worker.aadhaarLinkedPhoneVerified ? "Aadhaar-linked phone confirmed" : "Verification pending"}</Text>
+            </View>
+            <View className="flex-row items-start justify-between gap-3">
+              <Text style={type.eyebrow} className="text-black/38">Payout destination</Text>
+              <Text style={type.body} className="max-w-[60%] text-right text-[#111111]">{worker.upiId}</Text>
             </View>
           </View>
         </GlassPanel>

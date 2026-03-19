@@ -3,6 +3,7 @@ import Animated, { FadeInDown } from "react-native-reanimated";
 import { GlassPanel } from "@/components/GlassPanel";
 import { IncidentGlyph } from "@/components/IncidentGlyph";
 import { StatusChip } from "@/components/StatusChip";
+import { type } from "@/constants/typography";
 import { formatCompactCurrency, formatDateTime, formatMetaLine } from "@/utils/format";
 import type { Incident } from "@/types";
 
@@ -19,16 +20,16 @@ export const IncidentCard = ({ incident, onPress }: { incident: Incident; onPres
             <View className="flex-1 flex-row items-start gap-3">
               <IncidentGlyph scenario={incident.scenario} />
               <View className="flex-1">
-                <Text className="text-[17px] font-semibold leading-6 text-[#111111]">{incident.title}</Text>
-                <Text className="mt-1 text-[12px] uppercase tracking-[1.2px] text-black/42">
+                <Text style={type.bodyStrong} className="text-[#111111]">{incident.title}</Text>
+                <Text style={type.eyebrowTight} className="mt-1 text-black/42">
                   {formatMetaLine(incident.zone, formatDateTime(incident.creditedAt))}
                 </Text>
-                <Text className="mt-3 text-[13px] leading-5 text-black/68">{incident.shortReason}</Text>
+                <Text style={type.bodySmall} className="mt-3 text-black/68">{incident.shortReason}</Text>
               </View>
             </View>
             <View className={`gap-2 ${compact ? "ml-[60px]" : "items-end"}`}>
               <StatusChip label={incident.status} />
-              <Text className="text-[22px] font-semibold tracking-[-0.4px] text-[#111111]">{formatCompactCurrency(incident.amount)}</Text>
+              <Text style={type.metricValueCompact} className="text-[#111111]">{formatCompactCurrency(incident.amount)}</Text>
             </View>
           </View>
         </GlassPanel>

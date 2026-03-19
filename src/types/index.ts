@@ -2,25 +2,36 @@ export type EventScenario = "aqi" | "platform" | "heat";
 
 export interface WorkerProfile {
   id: string;
+  workerId: string;
   name: string;
   age: number;
   occupation: string;
   phone: string;
   platform: string;
   registeredZone: string;
+  fourWeekAverageDailyEarnings: number;
   weeklyBaselineEarnings: number;
   upiId: string;
   upiLinked: boolean;
+  aadhaarLinkedPhoneVerified: boolean;
   protectionStatus: string;
   activeStatus: boolean;
   availabilityNote: string;
+  policyActivatedAt: string;
 }
 
 export interface CoverageState {
   status: string;
   protectedThisWeek: number;
+  remainingProtectedEarnings: number;
   weeklyProtectionAmount: number;
   earningsProtectedToday: number;
+  weeklyPremium: number;
+  dailyInstallmentAmount: number;
+  premiumTier: string;
+  premiumLockedAt: string;
+  premiumWindowLabel: string;
+  premiumCollectionLabel: string;
   nextPremiumAmount: number;
   nextPremiumDueLabel: string;
   evScore: number;
@@ -80,6 +91,11 @@ export interface Incident {
   verifiedAt: string;
   creditedAt: string;
   payoutDestination: string;
+  payoutRail: string;
+  settlementSeconds: number;
+  oracleLayer: string;
+  workStatusCheck: string;
+  spoofingCheck: string;
   timeline: TimelineItemData[];
 }
 
@@ -96,9 +112,10 @@ export interface DashboardSnapshot {
 export interface RegisterPayload {
   name: string;
   phone: string;
+  workerId: string;
   platform: string;
   registeredZone: string;
-  weeklyBaselineEarnings: number;
+  averageDailyEarnings: number;
   upiId: string;
 }
 

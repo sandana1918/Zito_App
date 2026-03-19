@@ -5,6 +5,7 @@ import { BrandLogo } from "@/components/BrandLogo";
 import { GlassPanel } from "@/components/GlassPanel";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { ScreenContainer } from "@/components/ScreenContainer";
+import { type } from "@/constants/typography";
 import { useZitoData } from "@/hooks/useZitoData";
 import { useAppSession } from "@/store/AppProvider";
 import { formatCompactCurrency, formatMetaLine } from "@/utils/format";
@@ -13,19 +14,20 @@ import type { RegisterPayload } from "@/types";
 const initialForm: RegisterPayload = {
   name: "Raju Sharma",
   phone: "+91 98765 43210",
+  workerId: "BLR-BLK-2841",
   platform: "Blinkit",
   registeredZone: "Koramangala, Bengaluru",
-  weeklyBaselineEarnings: 4200,
+  averageDailyEarnings: 600,
   upiId: "raju@oksbi"
 };
 
 const fields = [
   { key: "name", label: "Full name", keyboardType: "default" },
   { key: "phone", label: "Phone number", keyboardType: "phone-pad" },
-  { key: "platform", label: "Platform", keyboardType: "default" },
-  { key: "registeredZone", label: "Zone", keyboardType: "default" },
-  { key: "weeklyBaselineEarnings", label: "Weekly earnings", keyboardType: "number-pad" },
-  { key: "upiId", label: "UPI ID", keyboardType: "default" }
+  { key: "workerId", label: "Blinkit worker ID", keyboardType: "default" },
+  { key: "registeredZone", label: "Registered delivery zone", keyboardType: "default" },
+  { key: "averageDailyEarnings", label: "4-week average daily earnings", keyboardType: "number-pad" },
+  { key: "upiId", label: "UPI handle", keyboardType: "default" }
 ] as const;
 
 export const OnboardingScreen = () => {
@@ -55,15 +57,15 @@ export const OnboardingScreen = () => {
       {step === 0 ? (
         <Animated.View entering={FadeInDown.duration(420)} className="flex-1 justify-between">
           <View>
-            <Text className="text-[12px] uppercase tracking-[2px] text-black/36">Create account</Text>
-            <Text className="mt-4 text-[34px] font-semibold leading-[40px] tracking-[-0.9px] text-[#111111]">Set up protection.</Text>
-            <Text className="mt-4 max-w-[280px] text-[15px] leading-7 text-black/56">Your work profile, registered zone, and payout destination.</Text>
+            <Text style={type.eyebrow} className="text-black/36">Create account</Text>
+            <Text style={type.screenTitle} className="mt-4 text-[#111111]">Set up in under 3 minutes.</Text>
+            <Text style={type.body} className="mt-4 max-w-[300px] text-black/56">Add your work profile, zone, daily earnings, and UPI handle. Aadhaar-linked phone verification turns protection on immediately.</Text>
           </View>
 
-          <View className="gap-3">
-            <Text className="text-[14px] text-black/62">Protection stays active once your account is set up.</Text>
-            <Text className="text-[14px] text-black/62">Verified AQI, heat, and platform events are handled automatically.</Text>
-          </View>
+          <GlassPanel className="px-5 py-5">
+            <Text style={type.eyebrow} className="text-black/34">What starts now</Text>
+            <Text style={type.bodyStrong} className="mt-3 text-[#111111]">Zito computes your EV Score every Sunday, locks a weekly premium, and collects it in daily micro-installments from earnings.</Text>
+          </GlassPanel>
 
           <PrimaryButton label="Continue" onPress={() => setStep(1)} />
         </Animated.View>
@@ -71,22 +73,23 @@ export const OnboardingScreen = () => {
 
       {step === 1 ? (
         <Animated.View entering={FadeInDown.duration(420)}>
-          <Text className="text-[12px] uppercase tracking-[2px] text-black/36">Details</Text>
-          <Text className="mt-4 text-[32px] font-semibold tracking-[-0.8px] text-[#111111]">Worker profile</Text>
+          <Text style={type.eyebrow} className="text-black/36">Details</Text>
+          <Text style={type.heroHeading} className="mt-4 text-[#111111]">Worker profile</Text>
 
           <View className="mt-7 gap-5">
             {fields.map((field) => (
               <View key={field.key} className="border-b border-black/[0.08] pb-3">
-                <Text className="mb-3 text-[11px] uppercase tracking-[1.8px] text-black/34">{field.label}</Text>
+                <Text style={type.eyebrowTight} className="mb-3 text-black/34">{field.label}</Text>
                 <TextInput
-                  className="text-[18px] text-[#111111]"
+                  style={type.bodyStrong}
+                  className="text-[#111111]"
                   keyboardType={field.keyboardType as any}
                   placeholderTextColor="rgba(17,17,17,0.32)"
                   value={String(form[field.key as keyof RegisterPayload])}
                   onChangeText={(value) =>
                     setForm((current) => ({
                       ...current,
-                      [field.key]: field.key === "weeklyBaselineEarnings" ? Number(value.replace(/[^0-9]/g, "")) || 0 : value
+                      [field.key]: field.key === "averageDailyEarnings" ? Number(value.replace(/[^0-9]/g, "")) || 0 : value
                     }))
                   }
                 />
@@ -104,23 +107,35 @@ export const OnboardingScreen = () => {
       {step === 2 ? (
         <Animated.View entering={FadeInDown.duration(420)} className="flex-1 justify-between">
           <View>
-            <Text className="text-[12px] uppercase tracking-[2px] text-black/36">Review</Text>
-            <Text className="mt-4 text-[32px] font-semibold tracking-[-0.8px] text-[#111111]">Activate protection</Text>
+            <Text style={type.eyebrow} className="text-black/36">Review</Text>
+            <Text style={type.heroHeading} className="mt-4 text-[#111111]">Activate protection</Text>
 
             <GlassPanel className="mt-7 px-5 py-5">
               <View>
-                <Text className="text-[20px] font-semibold text-[#111111]">{form.name}</Text>
-                <Text className="mt-2 text-[14px] text-black/58">{formatMetaLine(form.platform, form.registeredZone)}</Text>
+                <Text style={type.bodyStrong} className="text-[#111111]">{form.name}</Text>
+                <Text style={type.bodySmall} className="mt-2 text-black/58">{formatMetaLine(form.platform, form.registeredZone)}</Text>
               </View>
               <View className="my-5 h-px bg-black/[0.06]" />
               <View className="gap-4">
                 <View className="flex-row items-start justify-between gap-3">
-                  <Text className="text-[12px] uppercase tracking-[1.6px] text-black/34">Weekly earnings</Text>
-                  <Text className="text-[15px] text-[#111111]">{formatCompactCurrency(form.weeklyBaselineEarnings)}</Text>
+                  <Text style={type.eyebrow} className="text-black/34">Blinkit worker ID</Text>
+                  <Text style={type.body} className="text-[#111111]">{form.workerId}</Text>
                 </View>
                 <View className="flex-row items-start justify-between gap-3">
-                  <Text className="text-[12px] uppercase tracking-[1.6px] text-black/34">UPI</Text>
-                  <Text className="text-[15px] text-[#111111]">{form.upiId}</Text>
+                  <Text style={type.eyebrow} className="text-black/34">Average daily earnings</Text>
+                  <Text style={type.body} className="text-[#111111]">{formatCompactCurrency(form.averageDailyEarnings)}</Text>
+                </View>
+                <View className="flex-row items-start justify-between gap-3">
+                  <Text style={type.eyebrow} className="text-black/34">Weekly baseline</Text>
+                  <Text style={type.body} className="text-[#111111]">{formatCompactCurrency(form.averageDailyEarnings * 7)}</Text>
+                </View>
+                <View className="flex-row items-start justify-between gap-3">
+                  <Text style={type.eyebrow} className="text-black/34">UPI handle</Text>
+                  <Text style={type.body} className="text-[#111111]">{form.upiId}</Text>
+                </View>
+                <View className="flex-row items-start justify-between gap-3">
+                  <Text style={type.eyebrow} className="text-black/34">Identity</Text>
+                  <Text style={type.body} className="text-[#111111]">Aadhaar-linked phone confirmed</Text>
                 </View>
               </View>
             </GlassPanel>

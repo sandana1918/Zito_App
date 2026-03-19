@@ -16,7 +16,14 @@ export const ScreenContainer = ({ children, scroll = true }: ScreenContainerProp
       <View pointerEvents="none" style={{ position: "absolute", inset: 0 }}>
         <LinearGradient colors={gradients.ambientTop as [string, string]} style={{ position: "absolute", top: -40, left: -30, width: 280, height: 280, borderRadius: 280 }} />
         <LinearGradient colors={gradients.ambientBottom as [string, string]} style={{ position: "absolute", right: -60, bottom: 100, width: 260, height: 260, borderRadius: 260 }} />
-        <View style={{ position: "absolute", top: 180, right: 24, width: 92, height: 92, borderRadius: 92, backgroundColor: "rgba(17,24,39,0.02)", borderWidth: 1, borderColor: "rgba(17,24,39,0.03)" }} />
+        <LinearGradient
+          colors={["rgba(37,99,235,0.08)", "rgba(37,99,235,0.015)"]}
+          style={{ position: "absolute", top: 180, right: 24, width: 92, height: 92, borderRadius: 92 }}
+        />
+        <LinearGradient
+          colors={["rgba(5,150,105,0.13)", "rgba(5,150,105,0.02)"]}
+          style={{ position: "absolute", bottom: 220, left: -18, width: 120, height: 120, borderRadius: 120 }}
+        />
       </View>
       <SafeAreaView className="flex-1" edges={["top", "left", "right"]}>
         {scroll ? (
