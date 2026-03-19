@@ -2,7 +2,7 @@
 
 Zito is a premium mobile-only Expo prototype for automatic income protection for gig workers.
 
-## What’s Included
+## What's Included
 
 - Premium React Native Expo app built for mobile-only presentation
 - Local Express backend with seeded worker, coverage, risk, and payout data
