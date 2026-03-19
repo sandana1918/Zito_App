@@ -60,12 +60,8 @@ export const OnboardingScreen = () => {
             <Text style={type.eyebrow} className="text-black/36">Create account</Text>
             <Text style={type.screenTitle} className="mt-4 text-[#111111]">Set up in under 3 minutes.</Text>
             <Text style={type.body} className="mt-4 max-w-[300px] text-black/56">Add your work profile, zone, daily earnings, and UPI handle. Aadhaar-linked phone verification turns protection on immediately.</Text>
+            <Text style={type.bodySmall} className="mt-6 max-w-[300px] text-black/42">Weekly premium is locked automatically and collected in small daily installments from earnings.</Text>
           </View>
-
-          <GlassPanel className="px-5 py-5">
-            <Text style={type.eyebrow} className="text-black/34">What starts now</Text>
-            <Text style={type.bodyStrong} className="mt-3 text-[#111111]">Zito computes your EV Score every Sunday, locks a weekly premium, and collects it in daily micro-installments from earnings.</Text>
-          </GlassPanel>
 
           <PrimaryButton label="Continue" onPress={() => setStep(1)} />
         </Animated.View>
