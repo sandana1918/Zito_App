@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
-import { NavigationContainer, DarkTheme } from "@react-navigation/native";
+import { NavigationContainer, DefaultTheme } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import type { NavigationContainerRefWithCurrent } from "@react-navigation/native";
@@ -22,13 +22,13 @@ const Tab = createBottomTabNavigator<RootTabParamList>();
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 const theme = {
-  ...DarkTheme,
+  ...DefaultTheme,
   colors: {
-    ...DarkTheme.colors,
+    ...DefaultTheme.colors,
     background: colors.ink,
-    card: colors.ink,
-    border: "rgba(255,255,255,0.08)",
-    primary: colors.electric,
+    card: colors.inkSoft,
+    border: "rgba(17,24,39,0.08)",
+    primary: colors.accent,
     text: colors.text,
     notification: colors.danger
   }
@@ -58,7 +58,7 @@ const MainTabs = () => (
         paddingBottom: 10,
         paddingTop: 8,
         borderTopWidth: 1,
-        borderTopColor: "rgba(255,255,255,0.06)",
+        borderTopColor: "rgba(17,24,39,0.08)",
         backgroundColor: "transparent",
         borderTopLeftRadius: 0,
         borderTopRightRadius: 0,
@@ -70,7 +70,7 @@ const MainTabs = () => (
           style={{
             flex: 1,
             borderTopWidth: 1,
-            borderTopColor: "rgba(255,255,255,0.04)"
+            borderTopColor: "rgba(17,24,39,0.03)"
           }}
         />
       ),

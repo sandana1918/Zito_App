@@ -21,9 +21,9 @@ export const ConditionRow = ({ aqi, temperature, platform }: ConditionRowProps) 
     <View className={`gap-3 ${compact ? "" : "flex-row"}`}>
       {items.map((item) => (
         <GlassPanel key={item.label} className={`px-4 py-4 ${compact ? "" : "flex-1"}`}>
-          <Text className="text-[11px] uppercase tracking-[1.1px] text-white/[0.45]">{item.label}</Text>
+          <Text className="text-[11px] uppercase tracking-[1.1px] text-black/45">{item.label}</Text>
           <View className="mt-3 flex-row items-start justify-between gap-3">
-            <Text className="flex-1 text-[14px] font-semibold leading-5 text-white">{item.value}</Text>
+            <Text className="flex-1 text-[14px] font-semibold leading-5 text-[#111111]">{item.value}</Text>
             <StatusChip
               label={
                 item.value.includes("Online")

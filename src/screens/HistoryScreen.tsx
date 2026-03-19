@@ -24,10 +24,8 @@ export const HistoryScreen = () => {
   return (
     <ScreenContainer>
       <Animated.View entering={FadeInDown.duration(450)}>
-        <Text className="text-[34px] font-semibold text-white">Payout history</Text>
-        <Text className="mt-3 text-[15px] leading-7 text-white/[0.58]">
-          Every verified disruption and automatic credit is recorded here.
-        </Text>
+        <Text className="text-[34px] font-semibold text-[#111111]">Payout history</Text>
+        <Text className="mt-3 text-[15px] leading-7 text-black/58">Every verified disruption and automatic credit is recorded here.</Text>
       </Animated.View>
 
       <View className={`mt-6 gap-3 ${compact ? "" : "flex-row"}`}>
@@ -48,4 +46,3 @@ export const HistoryScreen = () => {
     </ScreenContainer>
   );
 };
-

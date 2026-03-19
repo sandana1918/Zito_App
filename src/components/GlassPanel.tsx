@@ -8,18 +8,18 @@ interface GlassPanelProps extends ViewProps {
 export const GlassPanel = ({ children, style, className = "", ...props }: PropsWithChildren<GlassPanelProps>) => (
   <View
     {...props}
-    className={`rounded-[28px] border border-white/[0.08] bg-[#131723]/[0.94] ${className}`}
+    className={`rounded-[28px] border border-black/[0.06] bg-white ${className}`}
     style={[
       {
         shadowColor: "#000",
-        shadowOpacity: 0.28,
-        shadowRadius: 26,
-        shadowOffset: { width: 0, height: 14 }
+        shadowOpacity: 0.06,
+        shadowRadius: 20,
+        shadowOffset: { width: 0, height: 10 }
       },
       style
     ]}
   >
-    <View style={{ position: "absolute", inset: 1, borderRadius: 27, borderWidth: 1, borderColor: "rgba(255,255,255,0.03)" }} />
+    <View style={{ position: "absolute", inset: 1, borderRadius: 27, borderWidth: 1, borderColor: "rgba(255,255,255,0.55)" }} />
     {children}
   </View>
 );

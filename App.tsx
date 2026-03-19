@@ -28,7 +28,7 @@ const AppShell = () => {
     <>
       <RootNavigator navigationRef={navigationRef} />
       <PayoutModal incident={activePayout} navigationRef={navigationRef} onDismiss={dismissPayout} visible={Boolean(activePayout)} />
-      <StatusBar style="light" />
+      <StatusBar style="dark" />
     </>
   );
 };
@@ -51,3 +51,4 @@ export default function App() {
     </GestureHandlerRootView>
   );
 }
+

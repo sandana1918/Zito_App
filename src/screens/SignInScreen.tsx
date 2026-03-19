@@ -3,7 +3,7 @@ import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useState } from "react";
 import { ActivityIndicator, Text, TextInput, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
-import { GlassPanel } from "@/components/GlassPanel";
+import { BrandLogo } from "@/components/BrandLogo";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { useAppSession } from "@/store/AppProvider";
@@ -20,55 +20,46 @@ export const SignInScreen = () => {
     setBusy(true);
     await new Promise((resolve) => setTimeout(resolve, 500));
     await signIn();
-    navigation.reset({ index: 0, routes: [{ name: "Main" }] });
     setBusy(false);
   };
 
   return (
     <ScreenContainer>
-      <Animated.View entering={FadeInDown.duration(450)}>
-        <Text className="text-[12px] uppercase tracking-[2px] text-white/[0.40]">Account access</Text>
-        <Text className="mt-3 text-[34px] font-semibold tracking-[-0.7px] text-white">Sign in</Text>
-        <Text className="mt-3 text-[15px] leading-7 text-white/[0.58]">Return to your protected dashboard with your mobile number and secure passcode.</Text>
+      <Animated.View entering={FadeInDown.duration(420)}>
+        <BrandLogo muted />
+        <Text className="mt-8 text-[12px] uppercase tracking-[2px] text-black/36">Sign in</Text>
+        <Text className="mt-4 text-[34px] font-semibold tracking-[-0.9px] text-[#111111]">Welcome back</Text>
       </Animated.View>
 
-      <GlassPanel className="mt-6 overflow-hidden px-5 py-5">
-        <View className="absolute right-[-20] top-[-18] h-28 w-28 rounded-full bg-[#58A6FF]/[0.10]" />
-        <View className="gap-4">
-          <View>
-            <Text className="mb-2 text-[12px] uppercase tracking-[1.4px] text-white/[0.42]">Mobile number</Text>
-            <TextInput
-              className="rounded-[20px] border border-white/[0.08] bg-white/[0.04] px-4 py-4 text-[16px] text-white"
-              keyboardType="phone-pad"
-              placeholder="Enter mobile number"
-              placeholderTextColor="rgba(255,255,255,0.35)"
-              value={phone}
-              onChangeText={setPhone}
-            />
-          </View>
-          <View>
-            <Text className="mb-2 text-[12px] uppercase tracking-[1.4px] text-white/[0.42]">Passcode</Text>
-            <TextInput
-              className="rounded-[20px] border border-white/[0.08] bg-white/[0.04] px-4 py-4 text-[16px] text-white"
-              placeholder="Enter passcode"
-              placeholderTextColor="rgba(255,255,255,0.35)"
-              secureTextEntry
-              value={passcode}
-              onChangeText={setPasscode}
-            />
-          </View>
+      <Animated.View entering={FadeInDown.delay(120).duration(420)} className="mt-8 gap-6">
+        <View className="border-b border-black/[0.08] pb-3">
+          <Text className="mb-3 text-[11px] uppercase tracking-[1.8px] text-black/34">Phone number</Text>
+          <TextInput
+            className="text-[18px] text-[#111111]"
+            keyboardType="phone-pad"
+            placeholder="Enter phone number"
+            placeholderTextColor="rgba(17,17,17,0.32)"
+            value={phone}
+            onChangeText={setPhone}
+          />
         </View>
-
-        <View className="mt-6 rounded-[24px] border border-white/[0.08] bg-white/[0.03] px-4 py-4">
-          <Text className="text-[11px] uppercase tracking-[1.8px] text-white/[0.42]">Protected account</Text>
-          <Text className="mt-2 text-[15px] leading-6 text-white/[0.72]">Returning workers land directly into the live dashboard with active protection, incident history, and risk monitoring intact.</Text>
+        <View className="border-b border-black/[0.08] pb-3">
+          <Text className="mb-3 text-[11px] uppercase tracking-[1.8px] text-black/34">Passcode</Text>
+          <TextInput
+            className="text-[18px] text-[#111111]"
+            placeholder="Enter passcode"
+            placeholderTextColor="rgba(17,17,17,0.32)"
+            secureTextEntry
+            value={passcode}
+            onChangeText={setPasscode}
+          />
         </View>
-      </GlassPanel>
+      </Animated.View>
 
-      <View className="mt-6 gap-3">
-        <PrimaryButton label="Continue To Dashboard" onPress={handleSignIn} disabled={busy || !phone.trim() || !passcode.trim()} />
+      <View className="mt-10 gap-3">
+        <PrimaryButton label="Continue" onPress={handleSignIn} disabled={busy || !phone.trim() || !passcode.trim()} />
         <PrimaryButton label="Back" tone="ghost" onPress={() => navigation.goBack()} />
-        {busy ? <ActivityIndicator color="#9BC4FF" /> : null}
+        {busy ? <ActivityIndicator color="#111111" /> : null}
       </View>
     </ScreenContainer>
   );

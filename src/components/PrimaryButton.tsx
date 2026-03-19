@@ -1,7 +1,5 @@
 import * as Haptics from "expo-haptics";
-import { LinearGradient } from "expo-linear-gradient";
 import { Pressable, Text, View, type PressableProps } from "react-native";
-import { gradients } from "@/constants/theme";
 
 interface PrimaryButtonProps extends PressableProps {
   label: string;
@@ -9,11 +7,8 @@ interface PrimaryButtonProps extends PressableProps {
 }
 
 export const PrimaryButton = ({ label, tone = "primary", style, ...props }: PrimaryButtonProps) => {
-  const content = (
-    <Text className={`text-center text-[14px] font-semibold uppercase tracking-[1.2px] ${tone === "ghost" ? "text-white/[0.80]" : "text-white"}`} numberOfLines={1}>
-      {label}
-    </Text>
-  );
+  const textClassName =
+    tone === "primary" ? "text-white" : tone === "secondary" ? "text-[#111111]" : "text-black/60";
 
   return (
     <Pressable
@@ -22,21 +17,32 @@ export const PrimaryButton = ({ label, tone = "primary", style, ...props }: Prim
         void Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
         props.onPress?.(event);
       }}
-      style={({ pressed }) => [{ transform: [{ scale: pressed ? 0.985 : 1 }] }, style as never]}
+      style={({ pressed }) => [
+        {
+          opacity: pressed ? 0.92 : 1,
+          transform: [{ scale: pressed ? 0.99 : 1 }],
+          alignSelf: tone === "ghost" ? "flex-start" : "center"
+        },
+        style as never
+      ]}
     >
       {tone === "primary" ? (
-        <LinearGradient
-          colors={gradients.success as [string, string]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-          style={{ borderRadius: 22, paddingVertical: 17, paddingHorizontal: 22, overflow: "hidden" }}
-        >
-          <View className="absolute inset-0 bg-white/[0.04]" />
-          {content}
-        </LinearGradient>
+        <View className="min-w-[168px] rounded-[18px] bg-[#111111] px-5 py-[15px]">
+          <Text className={`text-center text-[15px] font-semibold ${textClassName}`} numberOfLines={1}>
+            {label}
+          </Text>
+        </View>
+      ) : tone === "secondary" ? (
+        <View className="min-w-[156px] rounded-[18px] border border-black/[0.10] bg-white px-5 py-[15px]">
+          <Text className={`text-center text-[15px] font-semibold ${textClassName}`} numberOfLines={1}>
+            {label}
+          </Text>
+        </View>
       ) : (
-        <View className={`rounded-[22px] px-5 py-[15px] ${tone === "secondary" ? "border border-white/[0.12] bg-white/[0.06]" : "bg-transparent"}`}>
-          {content}
+        <View className="px-3 py-[12px]">
+          <Text className={`text-center text-[15px] font-medium ${textClassName}`} numberOfLines={1}>
+            {label}
+          </Text>
         </View>
       )}
     </Pressable>

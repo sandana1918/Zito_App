@@ -14,21 +14,21 @@ export const IncidentCard = ({ incident, onPress }: { incident: Incident; onPres
     <Animated.View entering={FadeInDown.duration(450)}>
       <Pressable onPress={onPress} style={({ pressed }) => [{ transform: [{ scale: pressed ? 0.99 : 1 }] }]}>
         <GlassPanel className="mb-3 overflow-hidden px-4 py-4">
-          <View className="absolute right-0 top-0 h-24 w-24 rounded-full bg-white/[0.04]" style={{ transform: [{ translateX: 24 }, { translateY: -20 }] }} />
+          <View className="absolute right-0 top-0 h-24 w-24 rounded-full bg-black/[0.03]" style={{ transform: [{ translateX: 24 }, { translateY: -20 }] }} />
           <View className={`gap-4 ${compact ? "" : "flex-row items-start justify-between"}`}>
             <View className="flex-1 flex-row items-start gap-3">
               <IncidentGlyph scenario={incident.scenario} />
               <View className="flex-1">
-                <Text className="text-[17px] font-semibold leading-6 text-white">{incident.title}</Text>
-                <Text className="mt-1 text-[12px] uppercase tracking-[1.2px] text-white/[0.42]">
+                <Text className="text-[17px] font-semibold leading-6 text-[#111111]">{incident.title}</Text>
+                <Text className="mt-1 text-[12px] uppercase tracking-[1.2px] text-black/42">
                   {formatMetaLine(incident.zone, formatDateTime(incident.creditedAt))}
                 </Text>
-                <Text className="mt-3 text-[13px] leading-5 text-white/[0.68]">{incident.shortReason}</Text>
+                <Text className="mt-3 text-[13px] leading-5 text-black/68">{incident.shortReason}</Text>
               </View>
             </View>
             <View className={`gap-2 ${compact ? "ml-[60px]" : "items-end"}`}>
               <StatusChip label={incident.status} />
-              <Text className="text-[22px] font-semibold tracking-[-0.4px] text-white">{formatCompactCurrency(incident.amount)}</Text>
+              <Text className="text-[22px] font-semibold tracking-[-0.4px] text-[#111111]">{formatCompactCurrency(incident.amount)}</Text>
             </View>
           </View>
         </GlassPanel>

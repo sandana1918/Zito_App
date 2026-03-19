@@ -1,15 +1,14 @@
-import { useNavigation } from "@react-navigation/native";
-import type { NativeStackNavigationProp } from "@react-navigation/native-stack";
 import { useMemo, useState } from "react";
 import { ActivityIndicator, Text, TextInput, View } from "react-native";
 import Animated, { FadeInDown } from "react-native-reanimated";
+import { BrandLogo } from "@/components/BrandLogo";
 import { GlassPanel } from "@/components/GlassPanel";
 import { PrimaryButton } from "@/components/PrimaryButton";
 import { ScreenContainer } from "@/components/ScreenContainer";
 import { useZitoData } from "@/hooks/useZitoData";
 import { useAppSession } from "@/store/AppProvider";
-import { formatCompactCurrency } from "@/utils/format";
-import type { RegisterPayload, RootStackParamList } from "@/types";
+import { formatCompactCurrency, formatMetaLine } from "@/utils/format";
+import type { RegisterPayload } from "@/types";
 
 const initialForm: RegisterPayload = {
   name: "Raju Sharma",
@@ -20,8 +19,16 @@ const initialForm: RegisterPayload = {
   upiId: "raju@oksbi"
 };
 
+const fields = [
+  { key: "name", label: "Full name", keyboardType: "default" },
+  { key: "phone", label: "Phone number", keyboardType: "phone-pad" },
+  { key: "platform", label: "Platform", keyboardType: "default" },
+  { key: "registeredZone", label: "Zone", keyboardType: "default" },
+  { key: "weeklyBaselineEarnings", label: "Weekly earnings", keyboardType: "number-pad" },
+  { key: "upiId", label: "UPI ID", keyboardType: "default" }
+] as const;
+
 export const OnboardingScreen = () => {
-  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
   const { registerMutation } = useZitoData();
   const { completeOnboarding } = useAppSession();
   const [step, setStep] = useState(0);
@@ -32,47 +39,49 @@ export const OnboardingScreen = () => {
   const activate = async () => {
     await registerMutation.mutateAsync(form);
     await completeOnboarding();
-    navigation.reset({ index: 0, routes: [{ name: "Main" }] });
   };
 
   return (
     <ScreenContainer>
-      <View className="mb-8 flex-row gap-2">
-        {progress.map((filled, index) => (
-          <View key={index} className={`h-1.5 flex-1 rounded-full ${filled ? "bg-[#78A9FF]" : "bg-white/[0.10]"}`} />
-        ))}
-      </View>
+      <Animated.View entering={FadeInDown.duration(420)}>
+        <BrandLogo muted />
+        <View className="mb-8 mt-8 flex-row gap-2">
+          {progress.map((filled, index) => (
+            <View key={index} className={`h-[3px] flex-1 rounded-full ${filled ? "bg-[#111111]" : "bg-black/[0.08]"}`} />
+          ))}
+        </View>
+      </Animated.View>
 
       {step === 0 ? (
-        <Animated.View entering={FadeInDown.duration(450)} className="flex-1 justify-between pb-2">
+        <Animated.View entering={FadeInDown.duration(420)} className="flex-1 justify-between">
           <View>
-            <Text className="text-[34px] font-semibold leading-[42px] text-white">Protection for every working hour</Text>
-            <Text className="mt-5 text-[16px] leading-7 text-white/[0.62]">
-              Zito watches for disruptions in your zone and automatically credits support when verified events affect your income.
-            </Text>
+            <Text className="text-[12px] uppercase tracking-[2px] text-black/36">Create account</Text>
+            <Text className="mt-4 text-[34px] font-semibold leading-[40px] tracking-[-0.9px] text-[#111111]">Set up protection.</Text>
+            <Text className="mt-4 max-w-[280px] text-[15px] leading-7 text-black/56">Your work profile, registered zone, and payout destination.</Text>
           </View>
+
+          <View className="gap-3">
+            <Text className="text-[14px] text-black/62">Protection stays active once your account is set up.</Text>
+            <Text className="text-[14px] text-black/62">Verified AQI, heat, and platform events are handled automatically.</Text>
+          </View>
+
           <PrimaryButton label="Continue" onPress={() => setStep(1)} />
         </Animated.View>
       ) : null}
 
       {step === 1 ? (
-        <Animated.View entering={FadeInDown.duration(450)}>
-          <Text className="text-[30px] font-semibold text-white">Set up your protection</Text>
-          <View className="mt-6 gap-3">
-            {[
-              { key: "name", label: "Full name" },
-              { key: "phone", label: "Phone number" },
-              { key: "platform", label: "Platform" },
-              { key: "registeredZone", label: "Registered delivery zone" },
-              { key: "weeklyBaselineEarnings", label: "Average weekly earnings" },
-              { key: "upiId", label: "UPI ID" }
-            ].map((field) => (
-              <GlassPanel key={field.key} className="px-4 py-3">
-                <Text className="mb-2 text-[12px] uppercase tracking-[1.1px] text-white/[0.45]">{field.label}</Text>
+        <Animated.View entering={FadeInDown.duration(420)}>
+          <Text className="text-[12px] uppercase tracking-[2px] text-black/36">Details</Text>
+          <Text className="mt-4 text-[32px] font-semibold tracking-[-0.8px] text-[#111111]">Worker profile</Text>
+
+          <View className="mt-7 gap-5">
+            {fields.map((field) => (
+              <View key={field.key} className="border-b border-black/[0.08] pb-3">
+                <Text className="mb-3 text-[11px] uppercase tracking-[1.8px] text-black/34">{field.label}</Text>
                 <TextInput
-                  className="text-[16px] text-white"
-                  keyboardType="default"
-                  placeholderTextColor="rgba(255,255,255,0.35)"
+                  className="text-[18px] text-[#111111]"
+                  keyboardType={field.keyboardType as any}
+                  placeholderTextColor="rgba(17,17,17,0.32)"
                   value={String(form[field.key as keyof RegisterPayload])}
                   onChangeText={(value) =>
                     setForm((current) => ({
@@ -81,10 +90,11 @@ export const OnboardingScreen = () => {
                     }))
                   }
                 />
-              </GlassPanel>
+              </View>
             ))}
           </View>
-          <View className="mt-6 gap-3">
+
+          <View className="mt-8 gap-3">
             <PrimaryButton label="Continue" onPress={() => setStep(2)} />
             <PrimaryButton label="Back" tone="ghost" onPress={() => setStep(0)} />
           </View>
@@ -92,26 +102,34 @@ export const OnboardingScreen = () => {
       ) : null}
 
       {step === 2 ? (
-        <Animated.View entering={FadeInDown.duration(450)} className="flex-1 justify-between pb-2">
+        <Animated.View entering={FadeInDown.duration(420)} className="flex-1 justify-between">
           <View>
-            <Text className="text-[30px] font-semibold text-white">Activate protection</Text>
-            <Text className="mt-4 text-[15px] leading-7 text-white/[0.62]">
-              Your registered details are ready. Once active, Zito monitors verified disruptions in your zone automatically.
-            </Text>
-            <GlassPanel className="mt-6 px-5 py-5">
-              <Text className="text-[13px] uppercase tracking-[1.2px] text-white/[0.45]">Coverage summary</Text>
-              <View className="mt-4 gap-3">
-                <Text className="text-[15px] leading-6 text-white">{form.name} • {form.platform}</Text>
-                <Text className="text-[15px] leading-6 text-white/[0.70]">{form.registeredZone}</Text>
-                <Text className="text-[15px] leading-6 text-white/[0.70]">Weekly baseline {formatCompactCurrency(form.weeklyBaselineEarnings)}</Text>
-                <Text className="text-[15px] leading-6 text-white/[0.70]">Linked UPI • {form.upiId}</Text>
+            <Text className="text-[12px] uppercase tracking-[2px] text-black/36">Review</Text>
+            <Text className="mt-4 text-[32px] font-semibold tracking-[-0.8px] text-[#111111]">Activate protection</Text>
+
+            <GlassPanel className="mt-7 px-5 py-5">
+              <View>
+                <Text className="text-[20px] font-semibold text-[#111111]">{form.name}</Text>
+                <Text className="mt-2 text-[14px] text-black/58">{formatMetaLine(form.platform, form.registeredZone)}</Text>
+              </View>
+              <View className="my-5 h-px bg-black/[0.06]" />
+              <View className="gap-4">
+                <View className="flex-row items-start justify-between gap-3">
+                  <Text className="text-[12px] uppercase tracking-[1.6px] text-black/34">Weekly earnings</Text>
+                  <Text className="text-[15px] text-[#111111]">{formatCompactCurrency(form.weeklyBaselineEarnings)}</Text>
+                </View>
+                <View className="flex-row items-start justify-between gap-3">
+                  <Text className="text-[12px] uppercase tracking-[1.6px] text-black/34">UPI</Text>
+                  <Text className="text-[15px] text-[#111111]">{form.upiId}</Text>
+                </View>
               </View>
             </GlassPanel>
           </View>
+
           <View className="gap-3">
-            <PrimaryButton label="Activate Protection" onPress={activate} disabled={registerMutation.isPending} />
+            <PrimaryButton label="Activate protection" onPress={activate} disabled={registerMutation.isPending} />
             <PrimaryButton label="Back" tone="ghost" onPress={() => setStep(1)} />
-            {registerMutation.isPending ? <ActivityIndicator color="#9BC4FF" /> : null}
+            {registerMutation.isPending ? <ActivityIndicator color="#111111" /> : null}
           </View>
         </Animated.View>
       ) : null}
