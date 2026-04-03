@@ -8,7 +8,7 @@ Zito is a premium mobile-only Expo prototype for automatic income protection for
 - Local Express backend with seeded worker, coverage, risk, and payout data
 - Sign in, create account, onboarding, payout history, risk, profile, and protection flows
 - Hidden operator controls for AQI, platform outage, extreme heat, guided flow, and reset
-- Seeded payout history for a polished first-run experience
+- Seeded payout history for a polished first-run experience.
 
 ## Install
 
